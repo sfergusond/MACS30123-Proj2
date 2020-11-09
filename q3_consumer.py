@@ -47,7 +47,7 @@ while 1==1:
 
 		# Terminate instances
 		ec2 = boto3.client('ec2')
-		ec2.terminate_instances(InstanceIds=['i-018fa19bf2c0e0548', 'i-08bb9715dadf9c9ca'])
+		ec2.terminate_instances(InstanceIds=['i-0462064050c9416d3', 'i-0740a955833d3f2c5'])
 
 	shards = out['NextShardIterator']
 	time.sleep(.2)
