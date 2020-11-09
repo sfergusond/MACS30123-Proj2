@@ -34,6 +34,8 @@ while 1==1:
 			Subject='MACS30123 Price Alert',
 			)
 
+		time.sleep(120) # allow time to confirm email address before deleting stuff
+
 		# Delete Kinesis Stream
 		kinesis.delete_stream(StreamName='macs30123')
 
@@ -42,7 +44,7 @@ while 1==1:
 
 		# Terminate instances
 		ec2 = boto3.client('ec2')
-		ec2.terminate_instances(InstanceIds=['i-018fa19bf2c0e0548', 'i-08bb9715dadf9c9ca'])
+		#ec2.terminate_instances(InstanceIds=['i-018fa19bf2c0e0548', 'i-08bb9715dadf9c9ca'])
 
 	shards = out['NextShardIterator']
 	time.sleep(.2)
