@@ -14,7 +14,7 @@ while 1==1:
 		Limit=1
 		)
 
-	data = out['RECORDS'][0]['DATA']
+	data = out['Records'][0]['Data']
 	data = ast.literal_eval(data.decode('utf-8'))
 
 	if data['PRICE'] < 3:
