@@ -37,7 +37,7 @@ while 1==1:
 		time.sleep(120) # allow time to confirm email address before deleting stuff
 
 		# Delete Kinesis Stream
-		kinesis.delete_stream(StreamName='macs30123')
+		#kinesis.delete_stream(StreamName='macs30123')
 
 		# Delete SNS topic
 		sns.delete_topic(TopicArn=topic_arn)
