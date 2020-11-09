@@ -12,10 +12,6 @@ def getReferrer():
 
 # Create Kinesis stream
 kinesis = boto3.client('kinesis')
-kinesis.create_stream(
-	StreamName='macs30123',
-	ShardCount=1
-)
 
 while True:
 	data = json.dumps(getReferrer())
