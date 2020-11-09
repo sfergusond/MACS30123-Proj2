@@ -1,4 +1,4 @@
-import boto3
+import boto3, time
 
 kinesis = boto3.client('kinesis')
 
