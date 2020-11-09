@@ -10,6 +10,7 @@ subscription = sns.subscribe(
 	Protocol='email',
 	Endpoint='csfergusondryden@uchicago.edu',
 )
+time.sleep(20) # give time to confimr email subscription before continuing
 
 shards = kinesis.get_shard_iterator(
 	StreamName='macs30123',
@@ -36,6 +37,7 @@ while 1==1:
 			Message=f"{data['TICKER']} fell below $3 at {data['EVENT_TIME']}",
 			Subject='MACS30123 Price Alert',
 			)
+		time.sleep(10) # Give email some time to send before deleteing the topic
 
 		# Delete Kinesis Stream
 		#kinesis.delete_stream(StreamName='macs30123')

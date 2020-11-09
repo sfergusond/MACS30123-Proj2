@@ -10,7 +10,6 @@ def getReferrer():
 	data['PRICE'] = round(price, 2)
 	return data
 
-# Create Kinesis stream
 kinesis = boto3.client('kinesis')
 
 while True:
