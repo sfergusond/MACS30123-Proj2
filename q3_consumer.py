@@ -1,6 +1,15 @@
 import boto3, time, ast
 
 kinesis = boto3.client('kinesis')
+sns = boto3.client('sns')
+
+# Create SNS topic
+topic_arn = sns.create_topic(Name='macs30123')['TopicArn']
+subscription = sns.subscribe(
+	TopicArn=topic_arn,
+	Protocol='email',
+	Endpoint='csfergusondryden@uchicago.edu',
+)
 
 shards = kinesis.get_shard_iterator(
 	StreamName='macs30123',
@@ -19,22 +28,14 @@ while 1==1:
 
 	if data['PRICE'] < 3:
 		event_time = data['EVENT_TIME']
+		print(data)
 
-		# Create and publish to SNS topic
-		sns = boto3.client('sns')
-		topic_arn = sns.create_topic(Name='macs30123')['TopicArn']
-		subscription = sns.subscribe(
-			TopicArn=topic_arn,
-			Protocol='email',
-			Endpoint='csfergusondryden@uchicago.edu',
-		)
+		# Publish to SNS topic
 		response = sns.publish(
 			TopicArn=topic_arn,
 			Message=f"{data['TICKER']} fell below $3 at {data['EVENT_TIME']}",
 			Subject='MACS30123 Price Alert',
 			)
-
-		time.sleep(120) # allow time to confirm email address before deleting stuff
 
 		# Delete Kinesis Stream
 		#kinesis.delete_stream(StreamName='macs30123')
