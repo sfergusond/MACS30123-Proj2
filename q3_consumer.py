@@ -14,5 +14,7 @@ while 1==1:
 		Limit=1
 		)
 
+	print(out)
+
 	shards = out['NextShardIterator']
 	time.sleep(.2)
