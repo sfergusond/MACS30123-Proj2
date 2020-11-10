@@ -52,17 +52,11 @@ url = base_url
 inp = input('Do you wish to re-scrape the catalogue (y/n)? ')
 t0 = time.time()
 while True and inp == 'y':
-    print('Now scraping page:', url)
     r = requests.get(url)
     html_soup = BeautifulSoup(r.text, 'html.parser')
     scrape_books(html_soup, url)
     # Is there a next page?
     next_a = html_soup.select('li.next > a')
-
-    # Get number of pages to iterate over
-    pages = html_soup.select('li.current')
-    pages = int(pages[0].getText().split()[-1])
-    print('Num pages:', pages)
 
     if not next_a or not next_a[0].get('href'):
         break
@@ -76,7 +70,6 @@ books = db['books'].find(order_by=['last_seen'])
 for book in books:
     book_id = book['book_id']
     book_url = base_url + 'catalogue/{}'.format(book_id)
-    print('Now scraping book:', book_url)
     r = requests.get(book_url)
     r.encoding = 'utf-8'
     html_soup = BeautifulSoup(r.text, 'html.parser')
