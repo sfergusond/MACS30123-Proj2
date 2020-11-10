@@ -4,6 +4,7 @@ import re
 import time
 import pywren
 import itertools
+import sys
 from datetime import datetime
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
@@ -60,37 +61,39 @@ def scrape_book(book_id):
     
     return book
 
-t0 = time.time()
+if __name__ == '__main__':
+    t0 = time.time()
 
-# Get number of pages to iterate over
-pages = html_soup.select('li.current')
-pages = int(pages[0].getText().split()[-1])
+    # Get number of pages to iterate over
+    pages = html_soup.select('li.current')
+    pages = int(pages[0].getText().split()[-1])
 
-# Get a list of URLs to map over
-catalogue_urls = [base_url + f'catalogue/page-{i}.html' for i in range(1, pages + 1)]
+    # Get a list of URLs to map over
+    catalogue_urls = [base_url + f'catalogue/page-{i}.html' for i in range(1, pages + 1)]
 
-# Scrape every result page using Lambda
-book_list = pywren.get_all_results(pwex.map(scrape_books, catalogue_urls))
-book_list = list(itertools.chain(*book_list)) # flatten list
-db['books'].insert_many(book_list)
+    # Scrape every result page using Lambda
+    book_list = pywren.get_all_results(pwex.map(scrape_books, catalogue_urls))
+    book_list = list(itertools.chain(*book_list)) # flatten list
+    db['books'].insert_many(book_list)
 
-t1 = time.time()
-print(f'Finished finding books in {t1 - t0} seconds')
+    t1 = time.time()
+    print(f'Finished finding books in {t1 - t0} seconds')
 
-# Scrape each book
-lambda_tasks, result = [], []
-for i in range(0, 25):
-    chunk = book_list[i::25]
-    book_ids = [b['book_id'] for b in chunk]
-    lambda_tasks.append(pwex.map(scrape_book, book_ids))
+    # Scrape each book
+    batch_size = int(sys.argv[1])
+    lambda_tasks, result = [], []
+    for i in range(0, batch_size):
+        chunk = book_list[i::batch_size]
+        book_ids = [b['book_id'] for b in chunk]
+        lambda_tasks.append(pwex.map(scrape_book, book_ids))
 
-# Wait for all scrapes to complete
-for future in lambda_tasks:
-    result.extend(pywren.get_all_results(future))
+    # Wait for all scrapes to complete
+    for future in lambda_tasks:
+        result.extend(pywren.get_all_results(future))
 
-# Add scrape info to database
-db['book_info'].insert_many(result)
+    # Add scrape info to database
+    db['book_info'].insert_many(result)
 
-t2 = time.time()
-print(f'Finished scraping individual books in {t2 - t1} seconds')
-print(f'Total time: {t2-t0} seconds')
+    t2 = time.time()
+    print(f'Finished scraping individual books in {t2 - t1} seconds')
+    print(f'Total time: {t2-t0} seconds')
