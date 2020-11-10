@@ -82,7 +82,7 @@ print(f'Finished finding books in {t1 - t0} seconds')
 # Scrape each book
 lambda_tasks, result = [], []
 for i in range(0, 4):
-    chunk = book_list[i::4]
+    chunk = book_list[i::8]
     book_ids = [b['book_id'] for b in chunk]
     lambda_tasks.append(pwex.map(scrape_book, book_ids))
 
@@ -92,7 +92,6 @@ for future in lambda_tasks:
 
 # Add scrape info to database
 db['book_info'].insert_many(result)
-print(result[:10])
 
 t2 = time.time()
 print(f'Finished scraping individual books in {t2 - t1} seconds')
