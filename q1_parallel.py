@@ -60,8 +60,6 @@ def scrape_book(book_id):
     
     return book
 
-# Scrape the pages in the catalogue
-inp = input('Do you wish to re-scrape the catalogue (y/n)? ')
 t0 = time.time()
 
 # Get number of pages to iterate over
@@ -81,8 +79,8 @@ print(f'Finished finding books in {t1 - t0} seconds')
 
 # Scrape each book
 lambda_tasks, result = [], []
-for i in range(0, 50):
-    chunk = book_list[i::50]
+for i in range(0, 25):
+    chunk = book_list[i::25]
     book_ids = [b['book_id'] for b in chunk]
     lambda_tasks.append(pwex.map(scrape_book, book_ids))
 
