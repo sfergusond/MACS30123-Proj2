@@ -92,7 +92,7 @@ for future in lambda_tasks:
 
 # Add scrape info to database
 db['book_info'].insert_many(result)
-print(results[:10])
+print(result[:10])
 
 t2 = time.time()
 print(f'Finished scraping individual books in {t2 - t1} seconds')
