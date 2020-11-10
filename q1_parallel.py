@@ -83,7 +83,8 @@ print(f'Finished finding books in {t1 - t0} seconds')
 lambda_tasks, result = [], []
 for i in range(0, 4):
     chunk = book_list[i::4]
-    lambda_tasks.append(pwex.map(scrape_book, chunk))
+    book_ids = [b['book_id'] for b in chunk]
+    lambda_tasks.append(pwex.map(scrape_book, book_ids))
 
 # Wait for all scrapes to complete
 for future in lambda_tasks:
