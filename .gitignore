@@ -2,4 +2,5 @@
 *.pem
 *.pdf
 *.ppk
+*.db
 venv/
