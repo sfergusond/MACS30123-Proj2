@@ -9,6 +9,12 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
+db = dataset.connect('sqlite:///books.db')
+base_url = 'http://books.toscrape.com/'
+pwex = pywren.default_executor()
+r = requests.get(base_url)
+html_soup = BeautifulSoup(r.text, 'html.parser')
+
 def scrape_books(url):
     result = []
 
@@ -56,17 +62,9 @@ def scrape_book(book_id):
     return book
 
 if __name__ == '__main__':
-    batch_size = int(sys.argv[1])
-    db = dataset.connect(f'sqlite:///books{batch_size}.db')
-    base_url = 'http://books.toscrape.com/'
-    pwex = pywren.default_executor()
-
-
     t0 = time.time()
 
     # Get number of pages to iterate over
-    r = requests.get(base_url)
-    html_soup = BeautifulSoup(r.text, 'html.parser')
     pages = html_soup.select('li.current')
     pages = int(pages[0].getText().split()[-1])
 
@@ -82,6 +80,7 @@ if __name__ == '__main__':
     print(f'Finished finding books in {t1 - t0} seconds')
 
     # Scrape each book
+    batch_size = int(sys.argv[1])
     lambda_tasks, result = [], []
     for i in range(0, batch_size):
         chunk = book_list[i::batch_size]
