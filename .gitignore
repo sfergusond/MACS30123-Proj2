@@ -1,4 +1,4 @@
-*.txt
+secrets.txt
 *.pem
 *.pdf
 *.ppk
