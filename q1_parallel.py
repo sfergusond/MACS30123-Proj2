@@ -3,6 +3,7 @@ import dataset
 import re
 import time
 import pywren
+import itertools
 from datetime import datetime
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
@@ -39,8 +40,9 @@ pages = int(pages[0].getText().split()[-1])
 # Get a list of URLs to map over
 catalogue_urls = [base_url + f'catalogue/page-{i}.html' for i in range(1, pages + 1)]
 
+# Scrape every result page using Lambda
 book_list = pywren.get_all_results(pwex.map(scrape_books, catalogue_urls))
-print(book_list)
+db['books'].insert_many(list(itertools.chain(*book_list)))
 
 t1 = time.time()
 print(f'Finished finding books in {t1 - t0} seconds')
