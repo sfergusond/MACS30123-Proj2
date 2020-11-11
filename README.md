@@ -32,8 +32,8 @@ I would like to collect and analyze live Twitter data on the US election. Rather
 To accomplish this, I will use various resources in the AWS ecosystem. I'll use an EC2 instance to schedule a cluster of Lamdba tasks to scrape Twitter using pywren. Results will be sent through a Kinesis stream into an RDS database. To clean the data, I'll use AWS Translate. For the analysis portion, PySpark or mrjob would be used along with AWS Comprehend. 
 
 Schedule:
-Week 1: Create Twitter API account and write prototype code to scrape relevant Twitter posts
-Week 2: Parallelize prototype code and begin ingesting data into an AWS RDS database by incorporating EC2, Lambda, and Kinesis 
-Week 3: Stop data ingestion after ~2 weeks of daily scraping, write prototype code for the data cleaning and analysis using Translate and Comprehend
-Week 4: Parallelize prototype code with PySpark or mrjob and conduct analysis on the whole body of data to find results
+-Week 1: Create Twitter API account and write prototype code to scrape relevant Twitter posts
+-Week 2: Parallelize prototype code and begin ingesting data into an AWS RDS database by incorporating EC2, Lambda, and Kinesis 
+-Week 3: Stop data ingestion after ~2 weeks of daily scraping, write prototype code for the data cleaning and analysis using Translate and Comprehend
+-Week 4: Parallelize prototype code with PySpark or mrjob and conduct analysis on the whole body of data to find results
 
