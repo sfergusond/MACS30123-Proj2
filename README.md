@@ -16,7 +16,7 @@ Runtime: 4.6 seconds
 
 ## 3
 
-Note: instead of using boto3 to create the EC2 instances and the Kinesis stream, I just made them manually on the AWS console. I had issues with the IAM permissions when running trying to create those on Python. 
+Note: instead of using Boto3 to create the EC2 instances and the Kinesis stream, I just made them manually on the AWS console. I had issues with the IAM permissions when trying to create those on Python. I was able to terminate/delete everything through Boto3.
 
 ![screenshot](https://github.com/sfergusond/MACS30123-Proj2/blob/master/q3_alert.png)
 
